@@ -11,3 +11,16 @@ def load_data():
         labelMat.append(int(line[-1]))
     return dataMat, labelMat
 
+
+def create_dic(dataMat):
+    Dict = []
+    for line in dataMat:
+        line = line[2].split()
+        Dict += line
+    Dict = set(Dict)
+    return Dict
+
+
+dataMat, labelMat = load_data()
+Dict = create_dic(dataMat)
+print(Dict)
