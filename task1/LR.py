@@ -1,5 +1,4 @@
 import numpy as np
-test
 
 
 def load_data():
