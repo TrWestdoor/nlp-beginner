@@ -35,6 +35,16 @@ def create_vector(dict_, dataMat):
     return dataMatrix
 
 
+def stand_regresssion(xMat, yMat):
+    yMat = yMat.T
+    xTx = xMat.T * xMat
+    if np.linalg.det(xTx) == 0.0:
+        print("This matrix is singular, cannot do inverse")
+        return
+    ws = xTx.I * (xMat.T * yMat)
+    return ws
+
+
 if __name__ == '__main__':
     dataMat, labelMat = load_data()
     if os.path.exists('dict.txt'):
@@ -46,4 +56,5 @@ if __name__ == '__main__':
         fw.write(' '.join(Dict))
 
     dataMatrix = create_vector(Dict, dataMat)
-    print(np.shape(dataMatrix))
+    ws = stand_regresssion(np.mat(dataMatrix), np.mat(labelMat))
+    print(ws)
