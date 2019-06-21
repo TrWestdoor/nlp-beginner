@@ -2,14 +2,14 @@ import numpy as np
 import os
 
 
-def load_data():
+def load_data(file_name):
     dataMat = []
     labelMat = []
-    fr = open('train.tsv')
+    fr = open(file_name)
     for line in fr.readlines()[1:]:
         line = line.strip().split()
-        dataMat.append([int(line[0]), int(line[1]), ' '.join(line[2:-1])])
-        labelMat.append(int(line[-1]))
+        dataMat.append([line[0], line[1], ' '.join(line[2:-1])])
+        labelMat.append(line[-1])
     return dataMat, labelMat
 
 
@@ -30,6 +30,8 @@ def create_vector(dict_, dataMat):
     for i in range(m):
         line = dataMat[i][2].strip().split()
         for word in line:
+            if word not in dict_:
+                continue
             if word not in [',', '.']:
                 dataMatrix[i][dict_.index(word)] = 1
     return dataMatrix
@@ -46,7 +48,9 @@ def stand_regresssion(xMat, yMat):
 
 
 if __name__ == '__main__':
-    dataMat, labelMat = load_data()
+    dataMat, labelMat = load_data('train.tsv')
+    labelMat = [int(x) for x in labelMat]
+    testMat, _ = load_data('test.tsv')
     if os.path.exists('dict.txt'):
         fr = open('dict.txt', 'r')
         Dict = fr.readline().strip().split()
@@ -56,5 +60,13 @@ if __name__ == '__main__':
         fw.write(' '.join(Dict))
 
     dataMatrix = create_vector(Dict, dataMat)
+    testMatrix = create_vector(Dict, testMat)
     ws = stand_regresssion(np.mat(dataMatrix), np.mat(labelMat))
-    print(ws)
+    y_pre = testMatrix * ws
+    print(y_pre)
+    with open('submission.csv', 'w') as f:
+        i = 0
+        f.write('PhraseId,Sentiment\n')
+        for num in [_[0] for _ in testMat]:
+            f.write(num + ',' + y_pre[i][0] + '\n')
+            i += 1
