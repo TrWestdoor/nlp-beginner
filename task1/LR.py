@@ -47,6 +47,11 @@ def stand_regresssion(xMat, yMat):
     return ws
 
 
+def softmax(x_vector):
+    sum_ = np.sum(np.exp(x_vector))
+    return x_vector / sum_
+
+
 if __name__ == '__main__':
     dataMat, labelMat = load_data('train.tsv')
     labelMat = [int(x) for x in labelMat]
