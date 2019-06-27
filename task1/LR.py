@@ -73,5 +73,5 @@ if __name__ == '__main__':
         i = 0
         f.write('PhraseId,Sentiment\n')
         for num in [_[0] for _ in testMat]:
-            f.write(num + ',' + y_pre[i][0] + '\n')
+            f.write(str(num) + ',' + str(y_pre[i][0]) + '\n')
             i += 1
