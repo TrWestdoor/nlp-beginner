@@ -66,6 +66,11 @@ if __name__ == '__main__':
 
     dataMatrix = create_vector(Dict, dataMat)
     testMatrix = create_vector(Dict, testMat)
+    m, n = np.shape(dataMatrix)
+    print(m, n)
+
+    
+'''
     ws = stand_regresssion(np.mat(dataMatrix), np.mat(labelMat))
     y_pre = testMatrix * ws
     print(y_pre)
@@ -75,3 +80,6 @@ if __name__ == '__main__':
         for num in [_[0] for _ in testMat]:
             f.write(str(num) + ',' + str(y_pre[i][0]) + '\n')
             i += 1
+'''
+
+
