@@ -69,7 +69,7 @@ if __name__ == '__main__':
     m, n = np.shape(dataMatrix)
     print(m, n)
 
-    
+
 '''
     ws = stand_regresssion(np.mat(dataMatrix), np.mat(labelMat))
     y_pre = testMatrix * ws
