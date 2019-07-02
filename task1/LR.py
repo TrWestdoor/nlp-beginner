@@ -48,13 +48,47 @@ def stand_regresssion(xMat, yMat):
 
 
 def softmax(x_vector):
-    sum_ = np.sum(np.exp(x_vector))
-    return x_vector / sum_
+    exps = np.exp(x_vector)
+    return exps / np.sum(exps)
+
+
+def cross_entropy(X,y):
+    """
+    X is the output from fully connected layer (num_examples x num_classes)
+    y is labels (num_examples x 1)
+    """
+    m = y.shape[0]
+    p = softmax(X)
+    #log_likelihood = -np.log(p[range(m),y])
+    loss = p - y
+    print(loss.shape)
+    #loss = np.sum(log_likelihood) / m
+    return loss
+
+
+def gradAscent(dataMat, classLabels):
+    dataMatrix = np.mat(dataMat)
+    labelMatrix = np.mat(classLabels)
+    m, n = np.shape(dataMatrix)
+    # print(n, m)
+    alpha = 0.01
+    maxCycles = 2000
+    weights = np.ones((n, 5))
+
+    for i in range(maxCycles):
+        error = cross_entropy(dataMatrix*weights, labelMatrix)
+        weights = weights - alpha * dataMatrix.transpose() * error
+        print(dataMatrix * error)
+        print(np.dot(dataMatrix, error))
 
 
 if __name__ == '__main__':
+    import time
     dataMat, labelMat = load_data('train.tsv')
     labelMat = [int(x) for x in labelMat]
+    y = np.zeros((len(dataMat), 5))
+    for i in range(len(dataMat)):
+        y[i][labelMat[i]-1] = 1
     testMat, _ = load_data('test.tsv')
     if os.path.exists('dict.txt'):
         fr = open('dict.txt', 'r')
@@ -66,8 +100,8 @@ if __name__ == '__main__':
 
     dataMatrix = create_vector(Dict, dataMat)
     testMatrix = create_vector(Dict, testMat)
-    m, n = np.shape(dataMatrix)
-    print(m, n)
+    gradAscent(dataMatrix, y)
+
 
     
 '''
