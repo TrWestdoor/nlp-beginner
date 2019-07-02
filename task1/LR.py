@@ -67,19 +67,18 @@ def cross_entropy(X,y):
 
 
 def gradAscent(dataMat, classLabels):
-    dataMatrix = np.mat(dataMat)
-    labelMatrix = np.mat(classLabels)
-    m, n = np.shape(dataMatrix)
+    dataMat = np.mat(dataMat)
+    classLabels = np.mat(classLabels)
+    m, n = np.shape(dataMat)
     # print(n, m)
     alpha = 0.01
     maxCycles = 2000
     weights = np.ones((n, 5))
 
     for i in range(maxCycles):
-        error = cross_entropy(dataMatrix*weights, labelMatrix)
-        weights = weights - alpha * dataMatrix.transpose() * error
-        print(dataMatrix * error)
-        print(np.dot(dataMatrix, error))
+        error = cross_entropy(np.dot(dataMat, weights), classLabels)
+        weights += alpha * np.dot(dataMat.transpose(), error)
+        print(np.sum(error))
 
 
 if __name__ == '__main__':
