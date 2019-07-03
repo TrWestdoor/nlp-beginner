@@ -58,10 +58,11 @@ def cross_entropy(X,y):
     y is labels (num_examples x 1)
     """
     m = y.shape[0]
-    p = softmax(X)
+    for i in range(m):
+        X[i] = softmax(X[i])
     #log_likelihood = -np.log(p[range(m),y])
-    loss = p - y
-    print(loss.shape)
+    loss = X - y
+    print(X)
     #loss = np.sum(log_likelihood) / m
     return loss
 
@@ -73,12 +74,12 @@ def gradAscent(dataMat, classLabels):
     # print(n, m)
     alpha = 0.01
     maxCycles = 2000
-    weights = np.ones((n, 5))
+    weights = np.random.rand(n, 5)
 
     for i in range(maxCycles):
         error = cross_entropy(np.dot(dataMat, weights), classLabels)
-        weights += alpha * np.dot(dataMat.transpose(), error)
-        print(np.sum(error))
+        weights -= alpha * np.dot(dataMat.transpose(), error)
+        print(i, ': ', np.sum(error))
 
 
 if __name__ == '__main__':
